@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
       message: "Please enter a valid email address",
     },
   },
-  thoughts: [thoughtSchema],
+  thoughts: Thought,
   friends: [userSchema],
 });
 

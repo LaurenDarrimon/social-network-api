@@ -58,7 +58,7 @@ Thought.find({}).exec((err, collection) => {
             reactions: reactionData,
             },
             {
-            thoughtText: "No admitance except on party business. ",
+            thoughtText: "No admitance except on party business.",
             uername: "Bilbo",
             reactions: reactionData,
             },
