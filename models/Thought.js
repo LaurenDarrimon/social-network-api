@@ -18,10 +18,10 @@ const reactionSchema = new mongoose.Schema({
 // thoughtSchema is strcuture of the parent document
 const thoughtSchema = new mongoose.Schema({
 
-thoughtText: { type: String, required: true },
-createdAt: { type: Date, default: Date.now },
-username: { type: String, required: true },
-reactions: [reactionSchema],
+    thoughtText: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now },
+    username: { type: String, }, //required: true 
+    reactions: [reactionSchema],
 // This will include an array that holds all the reactions
 
 });
@@ -35,9 +35,6 @@ const reactionData = [
     { reactionBody: 'That is deep, my friend.', username: "Frodo" },
     { reactionBody: 'But will there be biscuits?', username: "Bilbo" },
 ];
-
-
-const Thought = mongoose.model("User", thoughtSchema);
 
 const handleError = (err) => console.error(err);
   

@@ -15,8 +15,8 @@ const userSchema = new mongoose.Schema({
       message: "Please enter a valid email address",
     },
   },
-  thoughts: Thought,
-  friends: [userSchema],
+  //thoughts: Thought,
+  //friends: [userSchema], self reference
 });
 
 const User = mongoose.model("User", userSchema);
