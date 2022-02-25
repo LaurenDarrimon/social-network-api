@@ -1,11 +1,11 @@
 // Require models
-const { Reaction, User, Thought } = require("../models");
+const { User, Thought } = require("../models");
 
 //aggregate function for a user's friend count
-const friendCount = async () =>
-  User.aggregate()
-    .count("friendCount")
-    .then((numberOfFriends) => numberOfFriends);
+// const friendCount = async () =>
+//   User.aggregate()
+//     .count("friendCount")
+//     .then((numberOfFriends) => numberOfFriends);
 
 module.exports = {
   //GET all users, no filter
@@ -25,7 +25,10 @@ module.exports = {
   createUser(req, res) {
     User.create(req.body)
       .then((user) => res.json(user))
-      .catch((err) => res.status(500).json(err));
+      .catch((err) => {
+        console.log(err);
+        return res.status(500).json(err);
+      });
   },
 
   //GET a single user by _id and populated with thought and friend data
@@ -42,7 +45,7 @@ module.exports = {
 
   // DELETE a User -- api/users/:userId/
   deleteUser(req, res) {
-    User.findOneAndDelete({ _id: req.params.UserId })
+    User.findOneAndDelete({ _id: req.params.userId })
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No user found with that ID" })
@@ -54,21 +57,21 @@ module.exports = {
 
   // DELETE a User's friend, sad.
   // :userId/friends/:friendId
-//   removeFriend(req, res) {
-//     User.findOneAndUpdate(
-//       { _id: req.params.userId },
-//       { $pull: { User: { friends: req.params.friendId } } },
-//       { runValidators: true, new: true }
-//     )
-//       .then((user) =>
-//         !user
-//           ? res
-//               .status(404)
-//               .json({ message: "No user found with that ID :(" })
-//           : res.json(user)
-//       )
-//       .catch((err) => res.status(500).json(err));
-//   },
+  removeFriend(req, res) {
+    User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $pull: { User: { friends: req.params.friendId } } },
+      { runValidators: true, new: true }
+    )
+      .then((user) =>
+        !user
+          ? res
+              .status(404)
+              .json({ message: "No user found with that ID :(" })
+          : res.json(user)
+      )
+      .catch((err) => res.status(500).json(err));
+  },
 
   // POST to add new friend to User
   // :userId/friends/

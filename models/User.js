@@ -1,14 +1,12 @@
-const { Schema, model } = require('mongoose');
-const thoughtSchema = require('./Thought');
-
+const { Schema, model } = require("mongoose");
 
 const userSchema = new Schema(
   {
-    username: { 
-      type: String, 
-      required: true, 
-      unique: true, 
-      trim: true 
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
     },
     email: {
       type: String,
@@ -16,23 +14,31 @@ const userSchema = new Schema(
       unique: true,
       validate: {
         validator: function (inputEmail) {
-          return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/.test(inputEmail);
+          return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/.test(
+            inputEmail
+          );
         },
         message: "Please enter a valid email address",
       },
     },
-    thoughts: [thoughtSchema],
-    friends: [userSchema],
-  },
-    
-    {
-      toJSON: {
-        getters: true,
+    thoughts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Thought",
       },
+    ],
+    //friends: [userSchema],
+  },
+  {
+    toJSON: {
+      getters: true,
+      virtuals: true,
     },
+    id: false,
+  }
 );
 
-const User = model("User", userSchema);
+const User = model("user", userSchema);
 
 const handleError = (err) => console.error(err);
 
