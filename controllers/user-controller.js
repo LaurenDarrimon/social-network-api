@@ -75,23 +75,7 @@ module.exports = {
       });
   },
 
-  // DELETE a User's friend, sad.
-  // :userId/friends/:friendId
-  removeFriend(req, res) {
-    User.findOneAndUpdate(
-      { _id: req.params.userId },
-      { $pull: { User: { friends: req.params.friendId } } },
-      { runValidators: true, new: true }
-    )
-      .then((user) =>
-        !user
-          ? res.status(404).json({ message: "No user found with that ID :(" })
-          : res.json(user)
-      )
-      .catch((err) => res.status(500).json(err));
-  },
-
-  // POST to add new friend to User
+   // POST to add new friend to User
   // :userId/friends/
   addFriend(req, res) {
     console.log("You made a new friend!");
@@ -111,4 +95,23 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
+
+
+  // DELETE a User's friend, sad.
+  // :userId/friends/:friendId
+  removeFriend(req, res) {
+    User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $pull: { friends: req.params.friendId } },
+      { runValidators: true, new: true }
+    )
+      .then((user) =>
+        !user
+          ? res.status(404).json({ message: "No user found with that ID :(" })
+          : res.json(user)
+      )
+      .catch((err) => res.status(500).json(err));
+  },
+
+ 
 };

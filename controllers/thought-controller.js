@@ -19,14 +19,14 @@ module.exports = {
   //NEW thought, simple 
   createThought(req, res) {
     Thought.create(req.body)
-    .then((thought) =>
-        !thought
-          ? res.status(404).json({ message: "Thought could not be created" })
-          : User.findOneAndUpdate(
-                { _id: req.body.userId },
-                { $addToSet: { thoughts: req.body} },
-            )
-      )
+        .then((thought) =>
+            !thought
+            ? res.status(404).json({ message: "Thought could not be created" })
+            : User.findOneAndUpdate(
+                    { _id: req.body.userId },
+                    { $addToSet: { thoughts: req.body} },
+                )
+        )
       .then((user) => res.json(user))
       .catch((err) => {
         console.log(err);
