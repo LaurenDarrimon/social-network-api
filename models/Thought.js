@@ -71,8 +71,4 @@ Thought.find({}).exec((err, collection) => {
 
 
 
-
-
-
-
 module.exports = Thought;
