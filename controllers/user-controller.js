@@ -1,6 +1,13 @@
 // Require models
 const { Reaction, User, Thought } = require('../models');
 
+//aggregate function for a user's friend count 
+const friendCount = async () =>
+  User.aggregate()
+    .count('friendCount')
+    .then((numberOfFriends) => numberOfFriends);
+
+
 module.exports= {
     getUsers(req, res) {
         // User model to find all documents that are instances of that model
