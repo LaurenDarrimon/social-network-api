@@ -1,12 +1,18 @@
 const router = require("express").Router();
-// Require models
-const { Reaction, User, Thought } = require('../../models');
+
+const {
+  getUsers,
+  createUser,
+  getOneUser,
+  deleteUser,
+  addFriend,
+  removeFriend
+} = require('../../controllers/user-controller.js');
+
+
 
 // ------ api/users ------
-
-
 //GET all users & POST a new user
-
 router.route('/').get(getUsers).post(createUser);
 
 
