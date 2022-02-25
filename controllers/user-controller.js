@@ -2,10 +2,10 @@
 const { User, Thought } = require("../models");
 
 //aggregate function for a user's friend count
-// const friendCount = async () =>
-//   User.aggregate()
-//     .count("friendCount")
-//     .then((numberOfFriends) => numberOfFriends);
+const friendCount = async () =>
+  User.aggregate()
+    .count("friendCount")
+    .then((numberOfFriends) => numberOfFriends);
 
 module.exports = {
   //GET all users, no filter
@@ -48,11 +48,31 @@ module.exports = {
     User.findOneAndDelete({ _id: req.params.userId })
       .then((user) =>
         !user
-          ? res.status(404).json({ message: "No user found with that ID" })
+          ? res.status(404).json({ message: "No user found with that id" })
           : Thought.deleteMany({ _id: { $in: user.thoughts } })
       )
       .then(() => res.json({ message: "User and thoughts deleted!" }))
       .catch((err) => res.status(500).json(err));
+  },
+
+  //PUT update user
+  updateUser(req, res) {
+    User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $set: req.body },
+      { runValidators: true, new: true }
+    )
+      .then((user) =>
+        !user
+          ? res
+              .status(404)
+              .json({ message: "Sorry, no user was found with that id" })
+          : res.json(user)
+      )
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
   },
 
   // DELETE a User's friend, sad.
@@ -65,9 +85,7 @@ module.exports = {
     )
       .then((user) =>
         !user
-          ? res
-              .status(404)
-              .json({ message: "No user found with that ID :(" })
+          ? res.status(404).json({ message: "No user found with that ID :(" })
           : res.json(user)
       )
       .catch((err) => res.status(500).json(err));
