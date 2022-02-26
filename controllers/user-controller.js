@@ -11,14 +11,12 @@ module.exports = {
   //GET all users, no filter
   getUsers(req, res) {
     // User model to find all documents that are instances of that model
-    User.find({}, (err, result) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send(err);
-      } else {
-        res.status(200).send(result);
-      }
-    });
+    User.find({})
+        .populate({ path: 'thoughts', select: '-__v'})
+        .populate({ path: 'friends', select: '-__v'})
+        .select('-__v')
+        .then(user => res.json(user))
+        .catch(err => res.status(500).json(err))
   },
 
   // POST route to create a new user
@@ -33,15 +31,14 @@ module.exports = {
 
   //GET a single user by _id and populated with thought and friend data
   getOneUser(req, res) {
-    User.findOne({ id_: req.params.id }, (err, result) => {
-      if (result) {
-        res.status(200).json(result);
-      } else {
-        console.log("Sorry, unable to find user");
-        res.status(500).json({ message: "Sorry, unable to find user" });
-      }
-    });
+    User.findOne({ id_: req.params.id })
+      .populate({ path: 'thoughts', select: '-__v'})
+      .populate({ path: 'friends', select: '-__v'})
+      .select('-__v')
+      .then(user => res.json(user))
+      .catch(err => res.status(500).json(err))
   },
+  
 
   // DELETE a User -- api/users/:userId/
   deleteUser(req, res) {

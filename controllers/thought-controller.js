@@ -18,13 +18,21 @@ module.exports = {
   // POST route to create a new thought associated with a user
   //NEW thought, simple
   createThought(req, res) {
-    Thought.create(req.body)
-      .then((thought) =>
-        !thought
+    Thought.create({
+      thoughtText: req.body.thoughtText,
+      username: req.body.username,
+    })
+      .then(({ _id }) =>
+        !_id
           ? res.status(404).json({ message: "Thought could not be created" })
           : User.findOneAndUpdate(
               { _id: req.body.userId },
-              { $addToSet: { thoughts: req.body } }
+              {
+                $push: {
+                  thoughts: _id,
+                },
+              },
+              { new: true }
             )
       )
       .then((user) => res.json(user))
