@@ -13,7 +13,9 @@ Back-end API for a social network web application where users can share their th
 * [Questions](#questions)
 * [License](#license)
 
+### [LINK to Video Walkthrough](https://drive.google.com/file/d/1xjWUwbRy7Ns8pSK8XNd67bny_AQxaITt/view?usp=sharing)
 
+![Social Network API GIF](assets/social-api.gif)
 
 ### Installation
 🔧
@@ -31,6 +33,20 @@ To run the application from the command line:
 ~~~
 npm start
 ~~~
+
+### Features 
+
+
+What can we do with this API? Facilitate CRUD operations and interactions with users, friends, thoughts and reactions. 
+
+USERS: Create, read all, read by id, update, and delete
+
+FRIENDS: Add and delete friends from specific users. Count friends as a virtual property on User schema. 
+
+THOUGHTS: Create, read all, read by id, update, and delete thoughts. Use getter function to format thought time. 
+
+REACTIONS: Create and delete reactions as subdocument of thoughts. Count reactions as virtual property on thought schema. Use getter function for format time of reaction.  
+
 
 
 ### Contributing 
