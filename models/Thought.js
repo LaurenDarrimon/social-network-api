@@ -1,18 +1,20 @@
 const { deepEqual } = require("assert");
 const mongoose = require("mongoose");
-const { Schema, Types } = require("mongoose");
+const { Schema, model, Types } = require("mongoose");
 const User = require("./User");
 
 // structure of thought subdocument
 const reactionSchema = new mongoose.Schema(
   {
-    reactionId: Schema.Types.ObjectId,
-    reactionBody: { type: String, required: true },
+    reactionId: {
+      type: Schema.Types.ObjectId,
+      default: () => new Types.ObjectId()
+    },
+    reactionBody: { type: String, required: true, maxLength : 300 },
     createdAt: { type: Date, default: Date.now },
     username: {
       type: String,
       required: true,
-      //type: mongoose.Schema.User.ObjectId,
     },
   },
   {
@@ -26,11 +28,7 @@ const reactionSchema = new mongoose.Schema(
 // thoughtSchema is strcuture of the parent document
 const thoughtSchema = new Schema(
   {
-    thoughtId: {
-      type: Schema.Types.ObjectId,
-      default: () => new Types.ObjectId(),
-    },
-    thoughtText: { type: String, required: true },
+    thoughtText: { type: String, required: true, maxLength : 300 },
     createdAt: { type: Date, default: Date.now },
     username: { type: String }, //required: true
     userId: { type: String },
@@ -40,15 +38,18 @@ const thoughtSchema = new Schema(
   {
     toJSON: {
       getters: true,
-      setters: true,
       virtuals: true,
     },
     id: false,
   }
 );
 
+thoughtSchema.virtual('reactionCount').get(function() {
+  return this.reactions.length;
+});
+
 // Uses mongoose's .model() method to create the Thought model
-const Thought = mongoose.model("thought", thoughtSchema);
+const Thought = model("thought", thoughtSchema);
 
 // Uses model to create new instance of reaction subdocument
 const reactionData = [
